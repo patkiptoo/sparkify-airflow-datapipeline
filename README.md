@@ -23,3 +23,12 @@ server the customers, the data needs to be analyzed. This pipiline loads that da
     b. redshift connection
 5. Turn it on.
 6. Should run are top of the hour.
+
+
+## Sample Run Graphs
+
+The graph view showing the tasks and their dependencies.
+![alt text](https://github.com/patkiptoo/sparkify-airflow-datapipeline/blob/main/grapgh-view.JPG)
+
+A sample run output depicting relative runtime.
+![alt text](https://github.com/patkiptoo/sparkify-airflow-datapipeline/blob/main/gnatt-execution-graph.JPG)
