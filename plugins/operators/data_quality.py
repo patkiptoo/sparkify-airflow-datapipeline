@@ -26,7 +26,7 @@ class DataQualityOperator(BaseOperator):
         self.redshift_conn_id=redshift_conn_id,
         self.tables = tables
 
-     """
+    """
         Operator execute validates that data was actually loaded.
     """
     def execute(self, context):

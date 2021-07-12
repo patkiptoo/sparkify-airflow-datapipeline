@@ -2,6 +2,10 @@ from airflow.hooks.postgres_hook import PostgresHook
 from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 
+"""
+Class LoadFactOperator
+      Operator to load fact tables
+"""
 class LoadFactOperator(BaseOperator):
 
     ui_color = '#F98866'
@@ -24,7 +28,7 @@ class LoadFactOperator(BaseOperator):
         self.table=table
         self.insert_sql=insert_sql
 
-     """
+    """
         Operator execute to  clear data, and reload
     """
     def execute(self, context):

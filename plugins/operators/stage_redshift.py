@@ -44,7 +44,7 @@ class StageToRedshiftOperator(BaseOperator):
         self.delimiter=delimiter
         self.ignore_headers=ignore_headers
 
-     """
+    """
         Operator execute to  clear data, and reload
     """
     def execute(self, context):
@@ -66,8 +66,3 @@ class StageToRedshiftOperator(BaseOperator):
         )
         redshift.run(formatted_sql) 
         self.log.info('StageToRedshiftOperator not implemented yet')
-
-
-
-
-

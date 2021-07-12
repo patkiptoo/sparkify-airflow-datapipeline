@@ -28,7 +28,7 @@ class LoadDimensionOperator(BaseOperator):
         self.table=table
         self.insert_sql=insert_sql
 
-     """
+    """
         Operator execute to  clear data, and reload
     """
     def execute(self, context):
