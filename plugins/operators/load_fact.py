@@ -18,6 +18,7 @@ class LoadFactOperator(BaseOperator):
                  redshift_conn_id="redshift",
                  table="songplays",
                  insert_sql="",
+                 truncate_on=False,
                  *args, **kwargs):
 
         super(LoadFactOperator, self).__init__(*args, **kwargs)
@@ -26,18 +27,21 @@ class LoadFactOperator(BaseOperator):
         # self.conn_id = conn_id
         self.redshift_conn_id=redshift_conn_id
         self.table=table
+        self.truncate_on=truncate_on
         self.insert_sql=insert_sql
 
     """
-        Operator execute to  clear data, and reload
+        Operator execute load fact table.
+                   Default mode is append only for fact tables, unless truncate_on is True
     """
     def execute(self, context):
         # Redshift Hook
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         
-        # Clear data
-        self.log.info("Clearing data from destination Redshift table {}".format(self.table))
-        redshift.run("DELETE FROM {}".format(self.table))
+        if self.truncate_on:
+            # Clear data
+            self.log.info("Clearing data from destination Redshift dimension table {}".format(self.table))
+            redshift.run("DELETE FROM {}".format(self.table))
         
         # Build Query
         insert_query="INSERT INTO {} ({})".format(self.table,self.insert_sql)

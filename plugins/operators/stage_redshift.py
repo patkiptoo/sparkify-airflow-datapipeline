@@ -46,6 +46,7 @@ class StageToRedshiftOperator(BaseOperator):
 
     """
         Operator execute to  clear data, and reload
+                 stage table is always cleared before loading from s3
     """
     def execute(self, context):
         aws_hook = AwsHook(self.aws_credentials_id)

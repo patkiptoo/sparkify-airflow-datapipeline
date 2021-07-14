@@ -40,3 +40,23 @@ class SqlQueries:
                extract(month from start_time), extract(year from start_time), extract(dayofweek from start_time)
         FROM songplays
     """)
+
+    songplay_table_data_quality_check = ("""
+        SELECT COUNT(*) from songplays
+    """)
+    
+    user_table_data_quality_check = ("""
+        SELECT COUNT(*) from users
+    """)
+
+    song_table_data_quality_check = ("""
+        SELECT COUNT(*) from songs
+    """)
+    
+    artist_table_data_quality_check = ("""
+        SELECT COUNT(*) from artists
+    """)
+    
+    time_table_data_quality_check = ("""
+        SELECT COUNT(*) from time
+    """)

@@ -9,7 +9,6 @@ from helpers import SqlQueries
 # AWS_KEY = os.environ.get('AWS_KEY')
 # AWS_SECRET = os.environ.get('AWS_SECRET')
 
-
 """
 Default DAG args
     'email_on_failure': False,
@@ -73,6 +72,7 @@ load_songplays_table = LoadFactOperator(
     redshift_conn_id="redshift",
     aws_credentials_id="aws_credentials",
     table="songplays",
+    truncate_on=False,
     insert_sql=SqlQueries.songplay_table_insert
 )
 
@@ -85,6 +85,7 @@ load_user_dimension_table = LoadDimensionOperator(
     redshift_conn_id="redshift",
     aws_credentials_id="aws_credentials",
     table="users",
+    truncate_on=True,
     insert_sql=SqlQueries.user_table_insert
 )
 
@@ -97,6 +98,7 @@ load_song_dimension_table = LoadDimensionOperator(
     redshift_conn_id="redshift",
     aws_credentials_id="aws_credentials",
     table="songs",
+    truncate_on=True,
     insert_sql=SqlQueries.song_table_insert
 )
 
@@ -109,6 +111,7 @@ load_artist_dimension_table = LoadDimensionOperator(
     redshift_conn_id="redshift",
     aws_credentials_id="aws_credentials",
     table="artists",
+    truncate_on=True,
     insert_sql=SqlQueries.artist_table_insert    
 )
 
@@ -121,6 +124,7 @@ load_time_dimension_table = LoadDimensionOperator(
     redshift_conn_id="redshift",
     aws_credentials_id="aws_credentials",
     table="time",
+    truncate_on=True,
     insert_sql=SqlQueries.time_table_insert
 )
 
@@ -131,7 +135,13 @@ run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     dag=dag,
     redshift_conn_id="redshift",
-    tables=["time","artists","songplays","songs","users"]
+    dq_checks=[
+        {'check_sql':SqlQueries.time_table_data_quality_check , 'expected_result': 'greater_than_zero'},
+        {'check_sql': SqlQueries.user_table_data_quality_check, 'expected_result':'greater_than_zero'},
+        {'check_sql': SqlQueries.song_table_data_quality_check, 'expected_result':'greater_than_zero'},
+        {'check_sql': SqlQueries.artist_table_data_quality_check, 'expected_result':'greater_than_zero'},
+        {'check_sql': SqlQueries.songplay_table_data_quality_check, 'expected_result':'greater_than_zero'}
+        ]
 )
 
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
